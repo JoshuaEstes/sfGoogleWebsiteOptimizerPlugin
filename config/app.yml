@@ -1,0 +1,33 @@
+# all:
+#   sf_google_website_optimizer_plugin:
+#     enabled:      off
+#     uacct:        XX-XXXXX-X
+#     classes:
+#       ab:             sfGWOExperimentAB
+#       multivariate:   sfGWOExperimentMultivariate
+#     
+#     # the following experiments are examples, not default values.
+#     experiments:
+#       
+#       # an example of an A/B experiment
+#       example1:
+#         enabled:  on              # <-- defaults to on, if not present
+#         type:     ab
+#         uacct:    XX-XXXXX-X      # <-- inherits from above, if not present
+#         key:      XXXXXXXXXX
+#         pages:
+#           original: { module: main, action: index, alt: ~ }
+#           variations:
+#             - { module: main, action: index, alt: 1 }
+#             - { module: main, action: index, alt: 2 }
+#           conversion: { module: auth, action: register }
+#       
+#       # an example of a multivariate experiment
+#       example2:
+#         enabled:  on
+#         type:     multivariate
+#         uacct:    XX-XXXXX-X
+#         key:      XXXXXXXXXX
+#         pages:
+#           test: { module: main, action: index }
+#           conversion: { module: auth, action: register }
