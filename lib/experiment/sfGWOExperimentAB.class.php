@@ -29,7 +29,7 @@ class sfGWOExperimentAB extends sfGWOExperiment
     $this->doInsert($response, $control, self::POSITION_TOP);
     
     $tracker = $this->getTrackerScript($this->uacct, $this->key, 'test');
-    $this->doInsert($response, $tracker, self::POSITION_BOTTOM);
+    $this->doInsert($response, $tracker, self::POSITION_TOP);
   }
   
   /**
@@ -40,7 +40,7 @@ class sfGWOExperimentAB extends sfGWOExperiment
   protected function insertVariationPageContent($response)
   {
     $tracker = $this->getTrackerScript($this->uacct, $this->key, 'test');
-    $this->doInsert($response, $tracker, self::POSITION_BOTTOM);
+    $this->doInsert($response, $tracker, self::POSITION_TOP);
   }
   
   /**
@@ -51,7 +51,7 @@ class sfGWOExperimentAB extends sfGWOExperiment
   protected function insertConversionPageContent($response)
   {
     $tracker = $this->getTrackerScript($this->uacct, $this->key, 'goal');
-    $this->doInsert($response, $tracker, self::POSITION_BOTTOM);
+    $this->doInsert($response, $tracker, self::POSITION_TOP);
   }
   
 }

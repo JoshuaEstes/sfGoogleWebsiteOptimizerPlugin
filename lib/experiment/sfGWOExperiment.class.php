@@ -184,11 +184,11 @@ abstract class sfGWOExperiment
       switch ($position)
       {
         case self::POSITION_TOP:
-        $new = preg_replace('/<body[^>]*>/i', "$0\n".$content."\n", $old, 1);
+        $new = preg_replace('/<head[^>]*>/i', "$0\n".$content."\n", $old, 1);
         break;
         
         case self::POSITION_BOTTOM:
-        $new = str_ireplace('</body>', "\n".$content."\n</body>", $old);
+        $new = str_ireplace('<head>', "\n".$content."\n</head>", $old);
         break;
       }
       
@@ -212,19 +212,31 @@ abstract class sfGWOExperiment
   {
     $script = 
 <<<HTML
-<!-- control script -->
+<!-- Google Website Optimizer Control Script -->
 <script>
 function utmx_section(){}function utmx(){}
 (function(){var k='%s',d=document,l=d.location,c=d.cookie;function f(n){
-if(c){var i=c.indexOf(n+'=');if(i>-1){var j=c.indexOf(';',i);return c.substring(i+n.
-length+1,j<0?c.length:j)}}}var x=f('__utmx'),xx=f('__utmxx'),h=l.hash;
+if(c){var i=c.indexOf(n+'=');if(i>-1){var j=c.indexOf(';',i);return escape(c.substring(i+n.
+length+1,j<0?c.length:j))}}}var x=f('__utmx'),xx=f('__utmxx'),h=l.hash;
 d.write('<sc'+'ript src="'+
 'http'+(l.protocol=='https:'?'s://ssl':'://www')+'.google-analytics.com'
 +'/siteopt.js?v=1&utmxkey='+k+'&utmx='+(x?x:'')+'&utmxx='+(xx?xx:'')+'&utmxtime='
 +new Date().valueOf()+(h?'&utmxhash='+escape(h.substr(1)):'')+
 '" type="text/javascript" charset="utf-8"></sc'+'ript>')})();
+</script><script>utmx("url",'A/B');</script>
+<!-- End of Google Website Optimizer Control Script -->
+<!-- Google Website Optimizer Tracking Script -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['gwo._setAccount', 'UA-216632-10']);
+  _gaq.push(['gwo._trackPageview', '/2258042481/test']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
 </script>
-<!-- control script end -->
+<!-- End of Google Website Optimizer Tracking Script -->
 HTML;
     
     return sprintf($script, $key);
@@ -242,7 +254,7 @@ HTML;
    * 
    * @return  string
    */
-  protected function getTrackerScript($key, $uacct, $page)
+  protected function getTrackerScript($uacct, $key, $page)
   {
     $vars = null;
     if (class_exists('sfGoogleAnalyticsFilter') && sfConfig::get('app_google_analytics_enabled'))
@@ -274,20 +286,21 @@ HTML;
     
     $script = 
 <<<HTML
-<!-- tracker script -->
-<script>
-if(typeof(urchinTracker)!='function')document.write('<sc'+'ript src="'+
-'http'+(document.location.protocol=='https:'?'s://ssl':'://www')+
-'.google-analytics.com/urchin.js'+'"></sc'+'ript>')
+<!-- Google Website Optimizer Tracking Script -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['gwo._setAccount', '%s']);
+  _gaq.push(['gwo._trackPageview', '/%s/%s']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
 </script>
-<script>
-_uacct = '%s';%s
-urchinTracker("/%s/%s");
-</script>
-<!-- tracker script end -->
+<!-- End of Google Website Optimizer Tracking Script -->
 HTML;
     
-    return sprintf($script, $uacct, $vars, $key, $page);
+    return sprintf($script, $uacct, $key, $page);
   }
   
 }
