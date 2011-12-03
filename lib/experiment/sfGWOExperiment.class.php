@@ -208,14 +208,14 @@ abstract class sfGWOExperiment
    * 
    * @return  string
    */
-  protected function getControlScript($key)
+  protected function getControlScript($key,$uacct=null)
   {
     $script = 
 <<<HTML
 <!-- Google Website Optimizer Control Script -->
 <script>
 function utmx_section(){}function utmx(){}
-(function(){var k='%s',d=document,l=d.location,c=d.cookie;function f(n){
+(function(){var k='%key%',d=document,l=d.location,c=d.cookie;function f(n){
 if(c){var i=c.indexOf(n+'=');if(i>-1){var j=c.indexOf(';',i);return escape(c.substring(i+n.
 length+1,j<0?c.length:j))}}}var x=f('__utmx'),xx=f('__utmxx'),h=l.hash;
 d.write('<sc'+'ript src="'+
@@ -228,8 +228,8 @@ d.write('<sc'+'ript src="'+
 <!-- Google Website Optimizer Tracking Script -->
 <script type="text/javascript">
   var _gaq = _gaq || [];
-  _gaq.push(['gwo._setAccount', 'UA-216632-10']);
-  _gaq.push(['gwo._trackPageview', '/2258042481/test']);
+  _gaq.push(['gwo._setAccount', '%uacct%']);
+  _gaq.push(['gwo._trackPageview', '/%key%/test']);
   (function() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
@@ -239,7 +239,7 @@ d.write('<sc'+'ript src="'+
 <!-- End of Google Website Optimizer Tracking Script -->
 HTML;
     
-    return sprintf($script, $key);
+    return strtr($script, array('%key%'=>$key,'%uacct%'=>$uacct));
   }
   
   /**

@@ -17,7 +17,7 @@ class sfGWOExperimentAB extends sfGWOExperiment
    */
   protected function insertOriginalPageContent($response)
   {
-    $control = $this->getControlScript($this->key);
+    $control = $this->getControlScript($this->key,$this->uacct);
     
     // insert a/b function
     $lines = explode("\n", $control);
