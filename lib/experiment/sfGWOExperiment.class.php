@@ -289,8 +289,8 @@ HTML;
 <!-- Google Website Optimizer Tracking Script -->
 <script type="text/javascript">
   var _gaq = _gaq || [];
-  _gaq.push(['gwo._setAccount', '%s']);
-  _gaq.push(['gwo._trackPageview', '/%s/%s']);
+  _gaq.push(['gwo._setAccount', '%uacct%']);
+  _gaq.push(['gwo._trackPageview', '/%key%/%page%']);
   (function() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
@@ -299,7 +299,11 @@ HTML;
 </script>
 <!-- End of Google Website Optimizer Tracking Script -->
 HTML;
-    
+    return strtr($script, array(
+      '%uacct%' => $uacct,
+      '%key%' => $key,
+      '%page%' => $page,
+    ));
     return sprintf($script, $uacct, $key, $page);
   }
   
